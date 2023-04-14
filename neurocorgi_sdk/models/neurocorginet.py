@@ -59,6 +59,8 @@ class NeuroCorgiNet(DeepNetCell):
 
         super().__init__(dummy_deepnet.N2D2())
 
+        self.input_dims = dims
+
         self.conv3_1x1 = self['conv3_1x1'].get_outputs()
         self.conv5_1x1 = self['conv5_1x1'].get_outputs()
         self.conv7_5_1x1 = self['conv7_5_1x1'].get_outputs()
@@ -68,6 +70,9 @@ class NeuroCorgiNet(DeepNetCell):
         self.test()
 
     def __call__(self, x):
+        if x.shape() != self.input_dims:
+            raise RuntimeError("Expected input shape " + str(self.input_dims) +
+                               ", but provided input shape: " + str(x.shape()))
         x = super().__call__(x)
         return self.conv3_1x1, self.conv5_1x1, self.conv7_5_1x1, self.conv9_1x1, x
 
