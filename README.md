@@ -67,6 +67,20 @@ For instance:
 To evaluate NeuroCorgi's performances on other tasks, you should use those scripts as a base inspiration.
 
 
+## Docker
+
+If you wish to work inside a Docker container, you will need to build the image first. <br>
+To do so, run the command
+```
+docker build --pull --rm -f "Dockerfile" -t andante:neurocorgi_sdk "."
+```
+
+After building the image, start a container
+```
+docker run --name myContainer --gpus=all -it andante:neurocorgi_sdk
+```
+
+
 ## The Team
 
 The NeuroCorgi-SDK is a project that brought together several skillful engineers and researchers who contributed to it.
