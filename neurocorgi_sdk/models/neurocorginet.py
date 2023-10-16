@@ -30,10 +30,13 @@ class NeuroCorgiNet(DeepNetCell):
     Args:
         - dims (list): torch format [batch_size, channels, X, Y]. Must be consistent with dims already used.
         - weights_dir (str): path to the parameters folder 
+        - mode (str): configuration mode for the model (default="int4"). Available modes: 
+            - fakequant (the model is quantized but the parameters are stored in floating-point, the outputs are in floating-point)
+            - int4 (the inferences are performed in integers, the outputs are integer)
 
     """
 
-    def __init__(self, dims, weights_dir=None):
+    def __init__(self, dims, weights_dir=None, mode="int4"):
 
         model = MobileNetv1SATQuant(alpha=1.0, w_range=15, a_range=15)
 
@@ -42,29 +45,46 @@ class NeuroCorgiNet(DeepNetCell):
         else:
             model.import_free_parameters(weights_dir, ignore_not_exists=False)
 
-        # fuse_qat required an existing graph
-        # We therefore create a dummy provider and deepnet
-        dummy_provider = n2d2.provider.DataProvider(
-            database= n2d2.database.Database(),
-            size=[dims[3], dims[2], dims[1]], 
-            batch_size=dims[0]
-        )
+        self.input_dims = dims
+        self.mode = mode
+
         dummy_deepnet = model(n2d2.Tensor(dims, value=0)).get_deepnet()
-        n2d2.quantizer.fuse_qat(dummy_deepnet,
-                                dummy_provider,
-                                act_scaling_mode='FIXED_MULT32',
-                                w_mode='RINTF',
-                                b_mode='RINTF',
-                                c_mode='RINTF')
+
+        # This mode will generate the model topology used on chip
+        if mode == "int4":
+
+            # fuse_qat required an existing graph
+            # We therefore create a dummy provider and deepnet
+            dummy_provider = n2d2.provider.DataProvider(
+                database= n2d2.database.Database(),
+                size=[dims[3], dims[2], dims[1]], 
+                batch_size=dims[0]
+            )
+            
+            n2d2.quantizer.fuse_qat(dummy_deepnet,
+                                    dummy_provider,
+                                    act_scaling_mode='FIXED_MULT32',
+                                    w_mode='RINTF',
+                                    b_mode='RINTF',
+                                    c_mode='RINTF')
+    
 
         super().__init__(dummy_deepnet.N2D2())
 
-        self.input_dims = dims
+        if mode == "int4":
+            self.div4 = self['conv3_1x1'].get_outputs()
+            self.div8 = self['conv5_1x1'].get_outputs()
+            self.div16 = self['conv7_5_1x1'].get_outputs()
+            self.div32 = self['conv9_1x1'].get_outputs()
 
-        self.conv3_1x1 = self['conv3_1x1'].get_outputs()
-        self.conv5_1x1 = self['conv5_1x1'].get_outputs()
-        self.conv7_5_1x1 = self['conv7_5_1x1'].get_outputs()
-        self.conv9_1x1 = self['conv9_1x1'].get_outputs()
+        elif mode == "fakequant":            
+            self.div4 = self['bn3_1x1'].get_outputs()
+            self.div8 = self['bn5_1x1'].get_outputs()
+            self.div16 = self['bn7_5_1x1'].get_outputs()
+            self.div32 = self['bn9_1x1'].get_outputs()
+
+        else:
+            raise RuntimeError(f"The mode {self.mode} provided is not supported by this SDK.")
 
         # Setup the model in test mode (learning is not possible with this model)
         self.test()
@@ -74,7 +94,23 @@ class NeuroCorgiNet(DeepNetCell):
             raise RuntimeError("Expected input shape " + str(self.input_dims) +
                                ", but provided input shape: " + str(x.shape()))
         x = super().__call__(x)
-        return self.conv3_1x1, self.conv5_1x1, self.conv7_5_1x1, self.conv9_1x1, x
+        # print(self['conv9_1x1'].activation.scaling.getFixedPointScaling().getScalingPerOutput())
+        return self.div4, self.div8, self.div16, self.div32, x
+    
+    def get_scaling(self, output):
+        if self.mode == "int4":
+            if output == "div4":
+                layer = 'conv3_1x1'
+            elif output == "div8":
+                layer = 'conv5_1x1'
+            elif output == "div16":
+                layer = 'conv7_5_1x1'
+            elif output == "div32":
+                layer = 'conv9_1x1'
+        else:
+            raise RuntimeError(f"The mode {self.mode} provided cannot provided the scaling for the outputs of the model.")
+        
+        return self[layer].activation.scaling.getFixedPointScaling().getScalingPerOutput()
 
     # Override block set_solver to avoid that learning rates are modified
     def set_solver(self):

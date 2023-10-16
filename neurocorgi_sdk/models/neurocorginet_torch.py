@@ -35,13 +35,16 @@ class NeuroCorgiNet_torch(torch.nn.Module):
         - shape (list): input shape
         - weights_dir (str): path to the parameters folder
         - int_input (bool, optional): boolean to decide if a rescaling from [0,1] to [0,255] is required
+        - mode (str): configuration mode for the model (default="int4"). Available modes: 
+            - fakequant (the model is quantized but the parameters are stored in floating-point, the outputs are in floating-point)
+            - int4 (the inferences are performed in integers, the outputs are integer)
 
     """
 
-    def __init__(self, shape, weights_dir=None, int_input=False):
+    def __init__(self, shape, weights_dir=None, int_input=False, mode="int4"):
         super().__init__()
 
-        self.neurocorginet = NeuroCorgiNet([_ for _ in shape], weights_dir)
+        self.neurocorginet = NeuroCorgiNet([_ for _ in shape], weights_dir, mode)
         self.pytorch_neurocorgi = pytorch_to_n2d2.pytorch_interface.Block(self.neurocorginet)
         self.pytorch_neurocorgi.eval()
         self.int_input = int_input
@@ -71,3 +74,7 @@ class NeuroCorgiNet_torch(torch.nn.Module):
         n2d2_tensor = self.neurocorginet[0][item].get_outputs().dtoh()
         torch_tensor = pytorch_to_n2d2.pytorch_interface._to_torch(n2d2_tensor.N2D2())
         return torch_tensor
+    
+    def get_scaling(self, output):
+        return self.neurocorginet.get_scaling(output)
+    
