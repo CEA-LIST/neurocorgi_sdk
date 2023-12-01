@@ -38,6 +38,8 @@ class NeuroCorgiNet(DeepNetCell):
 
     def __init__(self, dims, weights_dir=None, mode="int4"):
 
+        print(f"Importing NeuroCorgi model in {mode} mode.")
+
         model = MobileNetv1SATQuant(alpha=1.0, w_range=15, a_range=15)
 
         if weights_dir is None:
@@ -52,6 +54,7 @@ class NeuroCorgiNet(DeepNetCell):
 
         # This mode will generate the model topology used on chip
         if mode == "int4":
+            print("Applying QAT Fusion...")
 
             # fuse_qat required an existing graph
             # We therefore create a dummy provider and deepnet

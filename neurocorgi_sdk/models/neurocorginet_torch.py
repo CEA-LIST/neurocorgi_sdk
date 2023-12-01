@@ -49,7 +49,7 @@ class NeuroCorgiNet_torch(torch.nn.Module):
         self.pytorch_neurocorgi.eval()
         self.int_input = int_input
         self.shape = shape
-
+        self.mode = mode
 
     def forward(self, x):
 
@@ -59,13 +59,14 @@ class NeuroCorgiNet_torch(torch.nn.Module):
 
         with torch.no_grad():
                     
+            # For int4 mode
             # Rescale the inputs from [0,1] to [0,255] if necessary
-            if not self.int_input:
+            if self.mode == "int4" and not self.int_input:
                 x = x * 255
 
-            conv3_1x1, conv5_1x1, conv7_5_1x1, conv9_1x1, _ = self.pytorch_neurocorgi(x)
+            div4, div8, div16, div32, _ = self.pytorch_neurocorgi(x)
 
-            return conv3_1x1, conv5_1x1, conv7_5_1x1, conv9_1x1
+            return div4, div8, div16, div32, _
 
     def __str__(self):
         return self.neurocorginet.__str__()
