@@ -66,7 +66,7 @@ class NeuroCorgiNet_torch(torch.nn.Module):
 
             div4, div8, div16, div32, _ = self.pytorch_neurocorgi(x)
 
-            return div4, div8, div16, div32, _
+            return div4, div8, div16, div32
 
     def __str__(self):
         return self.neurocorginet.__str__()
