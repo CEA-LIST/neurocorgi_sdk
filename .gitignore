@@ -1,4 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# C/C++ compiled libraries
+*.so
+
+# Distribution / packaging
 build*/
 dist*/
 *.egg-info
-data/*
+*.egg
+sdist/
+wheels/
+
+# Environments
+.env
+.venv
+.idea
+env/
+venv/
+ENV/
+
+# VSCode project settings
+.vscode/
+
+# Datasets
+data/
+datasets/
+
+# Models weights
+*weights*/
+*.onnx
+*.safetensors
