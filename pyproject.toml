@@ -1,0 +1,100 @@
+# NeuroCorgi SDK 🐕, CeCILL-C license
+
+# Overview:
+# This pyproject.toml file manages the build, packaging, and distribution of the NeuroCorgi SDK.
+# It defines essential project metadata, dependencies, and settings used to develop and deploy the SDK.
+
+# Key Sections:
+# - [build-system]: Specifies the build requirements and backend (e.g., setuptools, wheel).
+# - [project]: Includes details like name, version, description, authors, dependencies and more.
+# - [project.optional-dependencies]: Provides additional, optional packages for extended features.
+# - [tool.*]: Configures settings for various tools (e.g., pytest) used in the project.
+
+# Installation:
+# The SDK can be installed using the command: 'pip install neurocorgi_sdk'
+# For development purposes, you can install the package with: 'pip install .'
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Project settings -----------------------------------------------------------------------------------------------------
+[project]
+name = "neurocorgi_sdk"
+dynamic = ["version"]
+description = "NeuroCorgi-SDK to use the NeuroCorgi model in object detection, instance segmentation and image classification apps."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { "text" = "CECILL-2.1" }
+keywords = ["machine-learning", "deep-learning", "computer-vision", "ML", "DL", "AI", "NeuroCorgi", "CEA"]
+authors = [
+    { name = "Ivan Miro Panades" },
+    { name = "Vincent Lorrain" },
+    { name = "Lilian Billod" },
+    { name = "Inna Kucher" },
+    { name = "Vincent Templier" }
+]
+maintainers = [
+    { name = "Vincent Templier" },
+    { name = "Lilian Billod" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+]
+
+# Required dependencies ------------------------------------------------------------------------------------------------
+dependencies = [
+    "matplotlib>=3.3.0",
+    "numpy>=1.22.2",
+    "opencv-python>=4.6.0",
+    "pillow>=7.1.2",
+    "onnx>=1.14.0",             # weights loading
+    "safetensors>=0.4.1",       # weights loading
+    "requests>=2.23.0",
+    "scipy>=1.4.1",
+    "torch>=1.8.0",
+    "torchvision>=0.9.0",
+    "tqdm>=4.64.0",             # progress bars
+    "psutil",                   # system utilization
+    "py-cpuinfo",               # display CPU info
+    "thop>=0.1.1",              # FLOPs computation
+    "pandas>=1.1.4",
+    "seaborn>=0.11.0",          # plotting
+]
+
+# Optional dependencies ------------------------------------------------------------------------------------------------
+[project.optional-dependencies]
+extra = [
+    "ipython",                  # interactive notebook
+    "albumentations>=1.0.3",    # training augmentations
+    "pycocotools>=2.0.6",       # COCO mAP
+]
+
+[project.urls]
+Homepage = 'https://neurocorgi.com'
+Source = 'https://github.com/CEA-LIST/neurocorgi_sdk'
+
+# Tools settings -------------------------------------------------------------------------------------------------------
+[tool.setuptools]  # configuration specific to the `setuptools` build backend.
+packages = { find = { where = ["."], include = ["neurocorgi_sdk", "neurocorgi_sdk.*"] } }
+
+[tool.setuptools.dynamic]
+version = { attr = "neurocorgi_sdk.__version__" }
+
