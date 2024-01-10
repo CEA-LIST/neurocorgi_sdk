@@ -1,0 +1,38 @@
+# NeuroCorgi SDK 🐕, CeCILL-C license
+# Builds neurocorgi/neurocorgi_sdk:latest-cpu image on DockerHub https://hub.docker.com/r/neurocorgi/neurocorgi_sdk
+# Image is CPU-optimized for NeuroCorgi applications for training and inference
+
+# Use the official Python 3.10 slim-bookworm as base image
+FROM python:3.10-slim-bookworm
+
+# Install linux packages
+RUN apt update \
+    && apt install --no-install-recommends -y git tar zip curl htop screen libpython3-dev python3-pip
+
+# Create working directory
+WORKDIR /usr/src/neurocorgi_sdk
+
+# Get NeuroCorgi SDK from Github
+RUN git clone https://github.com/CEA-LIST/neurocorgi_sdk.git /usr/src/neurocorgi_sdk
+
+# Install SDK and required libraries 
+RUN python3 -m pip install --upgrade pip wheel
+RUN pip install --no-cache . --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Creates a symbolic link to make 'python' point to 'python3'
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
+
+# Usage Examples -------------------------------------------------------------------------------------------------------
+
+# Build and Push
+# t=neurocorgi/neurocorgi_sdk:latest-cpu && sudo docker build -f docker/Dockerfile-cpu -t $t . && sudo docker push $t
+
+# Run
+# t=neurocorgi/neurocorgi_sdk:latest-cpu && sudo docker run -it --ipc=host $t
+
+# Pull and Run
+# t=neurocorgi/neurocorgi_sdk:latest-cpu && sudo docker pull $t && sudo docker run -it --ipc=host $t
+
+# Pull and Run with local volume mounted
+# t=neurocorgi/neurocorgi_sdk:latest-cpu && sudo docker pull $t && sudo docker run -it --ipc=host -v "$(pwd)"/datasets:/usr/src/datasets $t
