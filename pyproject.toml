@@ -81,6 +81,12 @@ dependencies = [
 
 # Optional dependencies ------------------------------------------------------------------------------------------------
 [project.optional-dependencies]
+dev = [
+    "ipython",
+    "pytest",
+    "pytest-cov",
+]
+
 extra = [
     "ipython",                  # interactive notebook
     "albumentations>=1.0.3",    # training augmentations
