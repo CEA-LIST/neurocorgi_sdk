@@ -104,3 +104,9 @@ packages = { find = { where = ["."], include = ["neurocorgi_sdk", "neurocorgi_sd
 [tool.setuptools.dynamic]
 version = { attr = "neurocorgi_sdk.__version__" }
 
+[tool.pytest]
+addopts = "--color=yes"
+
+[tool.coverage.run]
+source = ["neurocorgi_sdk/"]
+data_file = "tests/.coverage"
