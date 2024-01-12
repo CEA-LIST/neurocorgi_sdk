@@ -1,7 +1,7 @@
 # NeuroCorgi SDK 🐕, CeCILL-C license
 # NeuroCorgi SDK Continuous Integration (CI)
 
-name: NeuroCorgi CI
+name: NeuroCorgi SDK CI
 
 on:
   push:
@@ -39,7 +39,12 @@ jobs:
           run: |
             python -m pip install --upgrade pip wheel
             pip install ".[dev]" --extra-index-url https://download.pytorch.org/whl/cpu
-        # To complete
+        - name: Check environment
+          run: pip list
+        - name: Run tests
+          shell: bash
+          run: |
+            pytest tests/
 
 
 
