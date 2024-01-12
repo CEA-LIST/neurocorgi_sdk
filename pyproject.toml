@@ -8,7 +8,7 @@
 # - [build-system]: Specifies the build requirements and backend (e.g., setuptools, wheel).
 # - [project]: Includes details like name, version, description, authors, dependencies and more.
 # - [project.optional-dependencies]: Provides additional, optional packages for extended features.
-# - [tool.*]: Configures settings for various tools (e.g., pytest) used in the project.
+# - [tool.*]: Configures settings for various tools (e.g., pytest, coverage) used in the project.
 
 # Installation:
 # The SDK can be installed using the command: 'pip install neurocorgi_sdk'
@@ -100,6 +100,7 @@ Source = 'https://github.com/CEA-LIST/neurocorgi_sdk'
 # Tools settings -------------------------------------------------------------------------------------------------------
 [tool.setuptools]  # configuration specific to the `setuptools` build backend.
 packages = { find = { where = ["."], include = ["neurocorgi_sdk", "neurocorgi_sdk.*"] } }
+package-data = { "neurocorgi_sdk.assets" = ["*.jpg"] }
 
 [tool.setuptools.dynamic]
 version = { attr = "neurocorgi_sdk.__version__" }
