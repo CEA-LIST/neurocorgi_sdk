@@ -44,7 +44,11 @@ jobs:
         - name: Run tests
           shell: bash
           run: |
-            pytest tests/
+            pytest --cov=neurocorgi_cov/ --cov-report xml tests/
+        - uses: actions/upload-artifact@v3
+          with:
+            name: sdk_coverage
+            path: ./neurocorgi_cov/*
 
 
 
