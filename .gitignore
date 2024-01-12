@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pytest_cache/
 
 # C/C++ compiled libraries
 *.so
@@ -19,6 +20,10 @@ wheels/
 env/
 venv/
 ENV/
+
+# Coverage artifacts
+*coverage.xml
+.coverage
 
 # VSCode project settings
 .vscode/
