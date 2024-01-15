@@ -40,8 +40,7 @@ class MobileNetv1SATQuant(Sequence):
         - end_rand_IT (int, optional): number of iterations when the reduction of the 
             bitwidth of the quantized cells has to stop. It is used for training.
 
-    Reference:
-    - Towards Efficient Training for Neural Network Quantization (https://arxiv.org/pdf/1912.10207.pdf)
+    Reference: Towards Efficient Training for Neural Network Quantization (https://arxiv.org/pdf/1912.10207.pdf)
 
     """
     def __init__(self, nb_outputs=1000, alpha=1.0, w_range=255, a_range=255,
@@ -107,7 +106,7 @@ class MobileNetv1SATQuantExtractor(MobileNetv1Extractor):
                     # First layer is always standard conv with 8-bit weights
                     if cell.get_name() == "conv1":
                         cell.quantizer = SATCell(range=255, apply_scaling=False,
-                                                 apply_quantization=True, quant_mode=quant_mode)
+                                                 apply_quantization=False, quant_mode=quant_mode)
                     else:
                         cell.quantizer = SATCell(range=w_range, apply_scaling=False,
-                                                 apply_quantization=True, quant_mode=quant_mode)
+                                                 apply_quantization=False, quant_mode=quant_mode)

@@ -18,14 +18,11 @@
 import torch
 import n2d2
 import pytorch_to_n2d2
-from neurocorgi_sdk.models import NeuroCorgiNet
-
-
-__all__ = ["NeuroCorgiNet_torch"]
+from .ncnet_n2d2 import NeuroCorgiNet_n2d2
     
 
-class NeuroCorgiNet_torch(torch.nn.Module):
-    """Torch wrapper for NeuroCorgiNet 
+class NeuroCorgiNet_n2d2_torch(torch.nn.Module):
+    """Torch wrapper for NeuroCorgiNet_n2d2
     
     Expects inputs in [0,1] which are rescaled to [0,255]. 
     This choice has been made because Pytorch preprocessing typically uses the ToTensor() method that 
@@ -44,7 +41,7 @@ class NeuroCorgiNet_torch(torch.nn.Module):
     def __init__(self, shape, weights_dir=None, int_input=False, mode="int4"):
         super().__init__()
 
-        self.neurocorginet = NeuroCorgiNet([_ for _ in shape], weights_dir, mode)
+        self.neurocorginet = NeuroCorgiNet_n2d2([_ for _ in shape], weights_dir, mode)
         self.pytorch_neurocorgi = pytorch_to_n2d2.pytorch_interface.Block(self.neurocorginet)
         self.pytorch_neurocorgi.eval()
         self.int_input = int_input

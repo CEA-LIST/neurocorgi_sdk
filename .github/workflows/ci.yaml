@@ -1,0 +1,48 @@
+# NeuroCorgi SDK, CeCILL-C license
+# SDK Continuous Integration (CI)
+
+name: NeuroCorgi SDK CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 0 * * *'  # runs at 00:00 UTC every day
+  workflow_dispatch:
+    inputs:
+      tests:
+        description: 'Run Tests'
+        default: false
+        type: boolean
+
+jobs:
+  Tests:
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.tests == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          os: [ubuntu-latest]
+          python-version: ['3.10']
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Set up Python environment
+          uses: actions/setup-python@v5
+          with:
+            python-version: ${{ matrix.python-version }}
+            cache: 'pip' # caching pip dependencies
+        - name: Install requirements
+          shell: bash
+          run: |
+            python -m pip install --upgrade pip wheel
+            pip install ".[dev]" --extra-index-url https://download.pytorch.org/whl/cpu
+        - name: Check environment
+          run: pip list
+        - name: Run tests
+          shell: bash
+          run: |
+            pytest --cov=neurocorgi_sdk/ --cov-report term tests/
+

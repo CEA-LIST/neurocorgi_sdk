@@ -1,4 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+.pytest_cache/
+
+# C/C++ compiled libraries
+*.so
+
+# Distribution / packaging
 build*/
 dist*/
 *.egg-info
-data/*
+*.egg
+sdist/
+wheels/
+
+# Environments
+.env
+.venv
+.idea
+env/
+venv/
+ENV/
+
+# Coverage artifacts
+*coverage.xml
+.coverage
+
+# VSCode project settings
+.vscode/
+
+# Datasets
+data/
+datasets/
+
+# Models weights
+*weights*/
+*.onnx
+*.safetensors
