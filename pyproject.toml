@@ -63,11 +63,11 @@ classifiers = [
 # Required dependencies ------------------------------------------------------------------------------------------------
 dependencies = [
     "matplotlib",
-    "numpy>=1.17.5",
+    "numpy",
     "opencv-python",
     "pillow",
-    "onnx>=1.14.0",         # weights loading
-    "safetensors>=0.4.1",   # weights loading
+    "onnx",                 # weights loading
+    "safetensors",          # weights loading
     "requests",
     "scipy",
     "torch>=1.8.0",
