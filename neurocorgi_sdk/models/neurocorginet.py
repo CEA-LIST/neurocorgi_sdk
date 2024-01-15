@@ -1,3 +1,5 @@
+# NeuroCorgi SDK, CeCILL-C license
+
 import onnx
 import torch
 import numpy as np
@@ -8,6 +10,12 @@ __all__ = ["NeuroCorgiNet"]
 
 
 class Scaling_FixedPoint(nn.Module):
+    """Fixed-point scaling operator
+    Torch implementation of the fixed-point scaling operator from "N2D2
+    <https://github.com/CEA-LIST/N2D2/blob/master/src/Scaling_Kernels.cpp>"
+
+    """
+
     def __init__(self, 
                  num_features: int, 
                  mode="Symmetric", 
@@ -42,6 +50,22 @@ class Scaling_FixedPoint(nn.Module):
 
 
 class NeuroCorgiNet(nn.Module):
+    """NeuroCorgi model on chip
+
+    Simulate the 4-bit quantized MobileNetV1.\n 
+    On chip, the model is able to treat 1280x720 images at 30 FPS with less than 100 mW.
+
+    Since the model is fixed on chip, it is not possible to modify its parameters. 
+    To respect this condition, this model cannot be trained.
+
+    `Important`: Impose to use unsigned 8-bit inputs (i.e. values between 0 and 255)
+
+    Use the model::
+
+        >>> model = NeuroCorgiNet("model.safetensors")
+        >>> div4, div8, div16, div32 = model(image)
+    """
+
     def __init__(self, weights:str=""):
         super().__init__()
 

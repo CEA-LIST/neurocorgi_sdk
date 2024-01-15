@@ -1,3 +1,5 @@
+# NeuroCorgi SDK, CeCILL-C license
+
 import onnx
 import torch
 import numpy as np
@@ -6,7 +8,21 @@ import safetensors.torch
 
 
 class SAT_Quant(nn.Module):
-    def __init__(self, alpha:float=1.0, nb_bits:int=8, range:int=-1):
+    """Impements SAT operator for activations from
+    `"Towards Efficient Training for Neural Network Quantization"
+    <https://arxiv.org/abs/1912.10207>`.
+
+    Args:
+        alpha (float, optional): quantization parameter
+        nb_bits (int, optional): Number of bits used to quantize the activations
+        range (int, optional): Number of states used to quantize the activations 
+            (if not specified by the user, should be 2**nb_bits - 1) 
+    """
+
+    def __init__(self, 
+                 alpha:float=1.0, 
+                 nb_bits:int=8, 
+                 range:int=-1) -> None:
         super().__init__()
         self.alpha = nn.Parameter(torch.tensor([alpha]))
 
@@ -22,6 +38,21 @@ class SAT_Quant(nn.Module):
 
 
 class NeuroCorgiNet_fakequant(nn.Module):
+    """NeuroCorgi model on chip
+
+    Simulate the 4-bit fakequant quantized MobileNetV1.\n 
+    The paramaters (weights & biases) of the convolutions are quantized in 4-bit but are still stored in floating point 32-bit.
+    The batchnormalization layers are not fused with the convolutions. Ideally, use inputs with values between 0 and 1.
+
+    Since the model is fixed on chip, it is not possible to modify its parameters. 
+    To respect this condition, this model cannot be trained.
+
+    Use the model::
+
+        >>> model = NeuroCorgiNet_fakequant("model_fakequant.safetensors")
+        >>> div4, div8, div16, div32 = model(image)
+    """
+
     def __init__(self, weights:str=""):
         super().__init__()
 
