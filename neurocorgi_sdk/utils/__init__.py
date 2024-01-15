@@ -1,4 +1,4 @@
-# NeuroCorgi SDK 🐕, CeCILL-C license
+# NeuroCorgi SDK, CeCILL-C license
 
 from pathlib import Path
 

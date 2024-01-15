@@ -1,3 +1,4 @@
+# NeuroCorgi SDK, CeCILL-C license
 
 # If n2d2 is installed in the user python environment
 # then load n2d2 models

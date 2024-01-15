@@ -1,11 +1,11 @@
-# NeuroCorgi SDK 🐕, CeCILL-C license
-# NeuroCorgi SDK Continuous Integration (CI)
+# NeuroCorgi SDK, CeCILL-C license
+# SDK Continuous Integration (CI)
 
 name: NeuroCorgi SDK CI
 
 on:
   push:
-    branches: [master, refactoring]
+    branches: [master]
   pull_request:
     branches: [master]
   schedule:
@@ -45,7 +45,4 @@ jobs:
           shell: bash
           run: |
             pytest --cov=neurocorgi_sdk/ --cov-report term tests/
-
-
-
 

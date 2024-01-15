@@ -1,4 +1,4 @@
-# NeuroCorgi SDK 🐕, CeCILL-C license
+# NeuroCorgi SDK, CeCILL-C license
 # Builds neurocorgi/neurocorgi_sdk:latest-cpu image on DockerHub https://hub.docker.com/r/neurocorgi/neurocorgi_sdk
 # Image is CPU-optimized for NeuroCorgi applications for training and inference
 

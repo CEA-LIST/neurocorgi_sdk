@@ -1,4 +1,4 @@
-# NeuroCorgi SDK 🐕, CeCILL-C license
+# NeuroCorgi SDK, CeCILL-C license
 
 import contextlib
 import requests
