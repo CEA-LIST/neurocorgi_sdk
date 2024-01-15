@@ -1,4 +1,4 @@
-# NeuroCorgi SDK 🐕, CeCILL-C license
+# NeuroCorgi SDK, CeCILL-C license
 
 # Overview:
 # This pyproject.toml file manages the build, packaging, and distribution of the NeuroCorgi SDK.
@@ -24,7 +24,7 @@ name = "neurocorgi_sdk"
 dynamic = ["version"]
 description = "NeuroCorgi-SDK to use the NeuroCorgi model in object detection, instance segmentation and image classification apps."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 license = { "text" = "CECILL-2.1" }
 keywords = ["machine-learning", "deep-learning", "computer-vision", "ML", "DL", "AI", "NeuroCorgi", "CEA"]
 authors = [
@@ -45,6 +45,7 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -61,22 +62,19 @@ classifiers = [
 
 # Required dependencies ------------------------------------------------------------------------------------------------
 dependencies = [
-    "matplotlib>=3.3.0",
-    "numpy>=1.22.2",
-    "opencv-python>=4.6.0",
-    "pillow>=7.1.2",
-    "onnx>=1.14.0",             # weights loading
-    "safetensors>=0.4.1",       # weights loading
-    "requests>=2.23.0",
-    "scipy>=1.4.1",
+    "matplotlib",
+    "numpy>=1.17.5",
+    "opencv-python",
+    "pillow",
+    "onnx>=1.14.0",         # weights loading
+    "safetensors>=0.4.1",   # weights loading
+    "requests",
+    "scipy",
     "torch>=1.8.0",
     "torchvision>=0.9.0",
-    "tqdm>=4.64.0",             # progress bars
-    "psutil",                   # system utilization
-    "py-cpuinfo",               # display CPU info
-    "thop>=0.1.1",              # FLOPs computation
-    "pandas>=1.1.4",
-    "seaborn>=0.11.0",          # plotting
+    "tqdm",                 # progress bars
+    "pandas",
+    "seaborn",              # plotting
 ]
 
 # Optional dependencies ------------------------------------------------------------------------------------------------
@@ -91,6 +89,9 @@ extra = [
     "ipython",                  # interactive notebook
     "albumentations>=1.0.3",    # training augmentations
     "pycocotools>=2.0.6",       # COCO mAP
+    "psutil",                   # system utilization
+    "py-cpuinfo",               # display CPU info
+    "thop",                     # FLOPs computation
 ]
 
 [project.urls]
