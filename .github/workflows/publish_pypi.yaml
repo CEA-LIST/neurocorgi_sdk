@@ -36,6 +36,7 @@ jobs:
         shell: python
         run: |
           import os
+          import neurocorgi_sdk
           from neurocorgi_sdk.utils.checks import check_latest_pypi_version
 
           v_local = tuple(map(int, neurocorgi_sdk.__version__.split('.')))
