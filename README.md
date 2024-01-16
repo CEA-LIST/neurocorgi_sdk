@@ -10,7 +10,7 @@ The SDK provides some versions of the NeuroCorgi circuit which can simulate the 
 
 <div align="center">
     <a href="https://ai4di.automotive.oth-aw.de/images/EAI-PDF/2022-09-19_EAI_S2_P2-CEA_IvanMiro-Panades.pdf#page=17">
-    <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_design.png" width="100%" alt="NeuroCorgi ASIC">
+    <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_design.png" width="80%" alt="NeuroCorgi ASIC">
     </a>
     <figcaption>NeuroCorgi ASIC</figcaption>
 </div>
@@ -19,7 +19,7 @@ NeuroCorgi ASIC is able to extract features from HD images (1280x720) at 30 FPS 
 
 <div align="center">
     <a href="https://ai4di.automotive.oth-aw.de/images/EAI-PDF/2022-09-19_EAI_S2_P2-CEA_IvanMiro-Panades.pdf#page=10">
-    <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_performance.png" width="100%" alt="NeuroCorgi performance">
+    <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_performance.png" width="80%" alt="NeuroCorgi performance">
     </a>
     <figcaption>NeuroCorgi performance target</figcaption>
 </div>
