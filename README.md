@@ -12,19 +12,23 @@ The SDK provides some versions of the NeuroCorgi circuit which can simulate the 
     <a href="https://ai4di.automotive.oth-aw.de/images/EAI-PDF/2022-09-19_EAI_S2_P2-CEA_IvanMiro-Panades.pdf#page=17">
     <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_design.png" width="80%" alt="NeuroCorgi ASIC">
     </a>
-    <figcaption>NeuroCorgi ASIC</figcaption>
 </div>
+<div align="center">
+    <i>NeuroCorgi ASIC</i>
+</div>
+<br>
 
-NeuroCorgi ASIC is able to extract features from HD images (1280x720) at 30 FPS with less than 100 mW.
+The NeuroCorgi ASIC is able to extract features from HD images (1280x720) at 30 FPS with less than 100 mW.
 
 <div align="center">
     <a href="https://ai4di.automotive.oth-aw.de/images/EAI-PDF/2022-09-19_EAI_S2_P2-CEA_IvanMiro-Panades.pdf#page=10">
     <img src="https://github.com/CEA-LIST/neurocorgi_sdk/raw/master/docs/_static/NeuroCorgi_performance.png" width="80%" alt="NeuroCorgi performance">
     </a>
-    <figcaption>NeuroCorgi performance target</figcaption>
 </div>
-
-
+<div align="center">
+    <i>NeuroCorgi performance target</i>
+</div>
+<br>
 
 For more information about the NeuroCorgi ASIC, check the [presentation](https://ai4di.automotive.oth-aw.de/images/EAI-PDF/2022-09-19_EAI_S2_P2-CEA_IvanMiro-Panades.pdf) of [Ivan Miro-Panades](https://www.linkedin.com/in/ivanmiro/) at the International Workshop on Embedded Artificial Intelligence Devices, Systems, and Industrial Applications (EAI).
 
