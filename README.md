@@ -2,6 +2,7 @@
 
 [![NeuroCorgi SDK CI](https://github.com/CEA-LIST/neurocorgi_sdk/actions/workflows/ci.yaml/badge.svg)](https://github.com/CEA-LIST/neurocorgi_sdk/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/badge/license-CeCILL--C-blue.svg)](LICENSE)
+[![PyPI version](https://badge.fury.io/py/neurocorgi_sdk.svg)](https://pypi.org/project/neurocorgi_sdk)
 
 The NeuroCorgi-SDK is a SDK to use the NeuroCorgi model in your object detection, instance segmentation and classification applications as a feature extractor. <br>
 This SDK is developed inside the Andante project. For more information about the Andante project, go to https://www.andante-ai.eu/.
