@@ -49,10 +49,11 @@ def test_transform():
     assert isinstance(tensor, torch.Tensor)
     assert torch.all((tensor >= 0) & (tensor <= 255))
 
-    # Raise error
-    with pytest.raises(ValueError):
-        tensor = torch.randint(256, 512, (3, 32, 32))
-        tensor = ToNeuroCorgiChip()(tensor)
+    # Tensor [256;512] to tensor
+    tensor = torch.randint(256, 512, (3, 32, 32))
+    tensor = ToNeuroCorgiChip()(tensor)
+    assert isinstance(tensor, torch.Tensor)
+    assert torch.all((tensor >= 0) & (tensor <= 255))
 
     # Test __repr__
     assert repr(ToNeuroCorgiChip()) == 'ToNeuroCorgiChip()'

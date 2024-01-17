@@ -30,7 +30,10 @@ class ToNeuroCorgiChip:
             img = img * 255
         else:
             if not torch.all((img >= 0) & (img <= 255)):
-                raise ValueError("Please clip the image between 0 and 1 or 0 and 255")
+                # Normalize between 0 and 255
+                x_max = torch.max(img)
+                x_min = torch.min(img)
+                img = ((img - x_min) / (x_max - x_min)) * 255
             
         return img
 
