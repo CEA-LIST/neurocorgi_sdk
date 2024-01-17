@@ -1,10 +1,8 @@
 # NeuroCorgi SDK, CeCILL-C license
 
-import onnx
 import torch
 import numpy as np
 import torch.nn as nn
-import safetensors.torch
 
 
 class SAT_Quant(nn.Module):
@@ -170,6 +168,7 @@ class NeuroCorgiNet_fakequant(nn.Module):
             raise ValueError(f'Not supported format for loading parameters for {__class__.__name__}')
 
     def load_onnx(self, file:str):
+        import onnx
         model = onnx.load(file)
 
         # Load attributes
@@ -219,6 +218,7 @@ class NeuroCorgiNet_fakequant(nn.Module):
                     raise RuntimeError(f"Cannot load {i.name} initializer.")
 
     def load_safetensors(self, file:str):
+        import safetensors.torch
         safetensors.torch.load_model(self, file)
 
     def train(self, mode:bool = False):

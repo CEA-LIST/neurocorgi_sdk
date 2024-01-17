@@ -1,8 +1,8 @@
-import onnx
+# NeuroCorgi SDK, CeCILL-C license 
+
 import torch
 import numpy as np
 import torch.nn as nn
-import safetensors.torch
 
 
 class Head4ImageNet(nn.Module):
@@ -25,6 +25,7 @@ class Head4ImageNet(nn.Module):
             raise ValueError(f'Not supported format for loading parameters for {__class__.__name__}')
 
     def load_onnx(self, file:str):
+        import onnx
         model = onnx.load(file)
 
         # Load initializers
@@ -43,6 +44,7 @@ class Head4ImageNet(nn.Module):
                     raise RuntimeError(f"Cannot load {i.name} initializer.")
                 
     def load_safetensors(self, file:str):
+        import safetensors.torch
         safetensors.torch.load_model(self, file)
 
     def forward(self, x):

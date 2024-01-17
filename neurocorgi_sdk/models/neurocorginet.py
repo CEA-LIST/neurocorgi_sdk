@@ -1,10 +1,8 @@
 # NeuroCorgi SDK, CeCILL-C license
 
-import onnx
 import torch
 import numpy as np
 import torch.nn as nn
-import safetensors.torch
 
 __all__ = ["NeuroCorgiNet"]
 
@@ -41,7 +39,7 @@ class Scaling_FixedPoint(nn.Module):
 
         q = torch.round(x) * self.scaling.view(1, -1, 1, 1).expand(x.shape)
         q = (q + self.half_factor).int() >> self.fractional_bits
-        y = torch.clip(q, 0.0, self.saturation_max)
+        y = torch.clip(q, 0.0, self.saturation_max).float()
         return y
     
     def _check_input_dim(self, input):
@@ -183,6 +181,7 @@ class NeuroCorgiNet(nn.Module):
             raise ValueError(f'Not supported format for loading parameters for {__class__.__name__}')
 
     def load_onnx(self, file:str):
+        import onnx
         model = onnx.load(file)
 
         # Load initializers
@@ -213,6 +212,7 @@ class NeuroCorgiNet(nn.Module):
                     raise RuntimeError(f"Cannot load {i.name} initializer.")
                 
     def load_safetensors(self, file:str):
+        import safetensors.torch
         safetensors.torch.load_model(self, file)
 
     def train(self, mode:bool = False):

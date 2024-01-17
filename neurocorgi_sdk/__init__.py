@@ -6,6 +6,6 @@ This module contains several versions of the model to use with torch or n2d2.
 Use this model to build classification, detection or segmentation apps.
 """
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 from .models import *
