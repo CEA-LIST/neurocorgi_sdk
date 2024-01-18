@@ -33,6 +33,7 @@ jobs:
       - name: Check environment
         run: pip list
       - name: Check PyPI version
+        id: check_pypi
         shell: python
         run: |
           import os
@@ -50,10 +51,8 @@ jobs:
           increment = (d[0] == d[1] == 0) and (0 < d[2] < 3)
           
           os.system(f'echo "increment={increment}" >> $GITHUB_OUTPUT')
-          os.system(f'echo "version={neurocorgi_sdk.__version__}" >> $GITHUB_OUTPUT')
           if increment:
               print('Local version is higher than PyPI version. Publishing new version to PyPI ✅.')
-        id: check_pypi
       - name: Build and publish to PyPI
         continue-on-error: true
         if: (github.event_name == 'push' || github.event.inputs.pypi == 'true')  && steps.check_pypi.outputs.increment == 'True'
