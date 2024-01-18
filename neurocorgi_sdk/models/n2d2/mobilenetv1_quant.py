@@ -106,7 +106,7 @@ class MobileNetv1SATQuantExtractor(MobileNetv1Extractor):
                     # First layer is always standard conv with 8-bit weights
                     if cell.get_name() == "conv1":
                         cell.quantizer = SATCell(range=255, apply_scaling=False,
-                                                 apply_quantization=False, quant_mode=quant_mode)
+                                                 apply_quantization=True, quant_mode=quant_mode)
                     else:
                         cell.quantizer = SATCell(range=w_range, apply_scaling=False,
-                                                 apply_quantization=False, quant_mode=quant_mode)
+                                                 apply_quantization=True, quant_mode=quant_mode)
