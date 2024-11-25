@@ -1,8 +1,31 @@
 # NeuroCorgi SDK, CeCILL-C license
 
 import torch
+from torch.autograd.function import Function
 import numpy as np
 import torch.nn as nn
+
+"""
+    Quantization
+"""
+class q_k(Function):
+    """
+        This is the quantization module.
+        The input and output should be all on the interval [0, 1].
+    """
+    @staticmethod
+    def forward(ctx, input, range):
+        
+        assert range > 0
+        assert torch.all(input >= 0) and torch.all(input <= 1)
+        res = torch.round(range * input)
+        res.div_(range)
+        assert torch.all(res >= 0) and torch.all(res <= 1)
+        return res
+        
+    @staticmethod
+    def backward(ctx, grad_output):
+        return grad_output, None, None
 
 
 class SAT_Quant(nn.Module):
@@ -23,6 +46,7 @@ class SAT_Quant(nn.Module):
                  range:int=-1) -> None:
         super().__init__()
         self.alpha = nn.Parameter(torch.tensor([alpha]))
+        self.quant = q_k.apply
 
         tmp_range = range if range != -1 else pow(2, nb_bits) - 1
         self.range = nn.Parameter(torch.tensor([float(tmp_range)]))
@@ -30,7 +54,7 @@ class SAT_Quant(nn.Module):
     def forward(self, x):
         x_clip = torch.clip(x, 0.0, self.alpha.item())
         q = x_clip / self.alpha
-        q = torch.round(self.range * q) / self.range
+        q = self.quant(q, self.range)
         y = q * self.alpha
         return y
 
@@ -43,7 +67,8 @@ class NeuroCorgiNet_fakequant(nn.Module):
     The batchnormalization layers are not fused with the convolutions. Ideally, use inputs with values between 0 and 1.
 
     Since the model is fixed on chip, it is not possible to modify its parameters. 
-    To respect this condition, this model cannot be trained.
+    To respect this condition, this model base mode is eval.
+    Training is possible for exploration purpose.
 
     Use the model::
 
@@ -150,14 +175,12 @@ class NeuroCorgiNet_fakequant(nn.Module):
         self.bn9_1x1 = nn.BatchNorm2d(1024)
         self.satq9_1x1 = SAT_Quant(nb_bits=4)
 
-        # Since the model is fixed on chip, it is not possible to modify its parameters. 
-        # To respect this condition, this model cannot be trained.
-        super().train(False)
-
         # Load model
         if weights:
             self.load(weights)
 
+        # The model is fixed on chip. To respect this, the basic mode is evaluation.
+        self.eval()
     
     def load(self, file:str):
         if file.endswith(".onnx"):
@@ -220,10 +243,6 @@ class NeuroCorgiNet_fakequant(nn.Module):
     def load_safetensors(self, file:str):
         import safetensors.torch
         safetensors.torch.load_model(self, file)
-
-    def train(self, mode:bool = False):
-        if mode:
-            raise ValueError("Since the model is fixed on chip, NeuroCorgiNet cannot be trained.")
 
     def forward(self, x):
 
